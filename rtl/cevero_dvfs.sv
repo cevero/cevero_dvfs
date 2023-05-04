@@ -29,6 +29,7 @@ module cevero_dvfs
       ok_counter <= '0;
       timer <= '0;
     end else begin
+      if (error_i) error_counter <= error_counter + 1;
       case (state)
         IDLE : begin
           timer = timer + 1;
@@ -73,9 +74,5 @@ module cevero_dvfs
     end
   end
 
-  always_ff @(posedge error_i) error_counter <= error_counter + 1;
-
-  always_comb begin
-  end
 
 endmodule
