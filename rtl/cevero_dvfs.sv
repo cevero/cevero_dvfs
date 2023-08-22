@@ -3,6 +3,7 @@ module cevero_dvfs
   parameter int unsigned MaxErrorRate = 3,
   parameter int unsigned TimeFrame    = 10,
   parameter int unsigned MinFreq      = 10,
+  parameter int unsigned FreqStep     = 10,
   parameter int unsigned MinVoltage   = 0,
   parameter int unsigned MaxVoltage   = 5,
   parameter int unsigned OkThreshold  = 10
@@ -11,9 +12,9 @@ module cevero_dvfs
   input   logic       rst_ni,
   input   logic       error_i,
   input   logic [2:0] def_voltage_i,
-  input   logic [2:0] def_freq_i,
+  input   logic [31:0] def_freq_i,
   output  logic [2:0] set_voltage_o,
-  output  logic [2:0] set_freq_o
+  output  logic [31:0] set_freq_o
 );
 
   typedef enum logic [2:0] {IDLE  = 3'b000,
@@ -33,6 +34,7 @@ module cevero_dvfs
     if (!rst_ni) begin
       state <= IDLE;
       set_voltage_o <= def_voltage_i;
+      set_freq_o <= def_freq_i;
       error_counter <= '0;
       ok_counter <= '0;
       timer <= '0;
@@ -65,7 +67,7 @@ module cevero_dvfs
 
         DECF: begin
           if (set_freq_o > MinFreq)
-            set_freq_o = set_freq_o - 1;
+            set_freq_o = set_freq_o - FreqStep;
           next = IDLE;
         end
 
@@ -87,7 +89,7 @@ module cevero_dvfs
 
         INCF : begin
           if (set_freq_o < def_freq_i)
-            set_freq_o = set_freq_o + 1;
+            set_freq_o = set_freq_o + FreqStep;
           next = IDLE;
         end
         
