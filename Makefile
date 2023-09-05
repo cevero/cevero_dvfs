@@ -31,6 +31,8 @@ run:
 	$(SIM) -voptargs="+acc" -batch -do script/run.do work.tb_$(TOP_LEVEL)
 wave:
 	$(SIM) -voptargs="+acc" -do script/run_wave.do work.tb_$(TOP_LEVEL)
+vcd:
+	$(SIM) -voptargs="+acc" -batch -do script/run_vcd.do work.tb_$(TOP_LEVEL)
 
 # Removes all generated files
 clean:

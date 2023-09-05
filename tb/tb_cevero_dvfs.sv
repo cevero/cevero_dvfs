@@ -91,7 +91,7 @@ module tb_cevero_dvfs;
     error = 1;
 #10
     error = 0;
-#100000
+#10000
     $finish;
 
   end
